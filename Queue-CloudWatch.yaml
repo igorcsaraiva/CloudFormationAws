@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  FilaTeste:
+    Type: "AWS::SQS::Queue"
+    Properties: 
+      QueueName: "FilaTeste"
+  AlarmTeste:
+    Type: "AWS::CloudWatch::Alarm"
+    Properties: 
+      AlarmDescription: "Alerta mensagem na fila"
+      AlarmName: "AlertaMensagem"
+      ComparisonOperator: "GreaterThanOrEqualToThreshold"
+      Namespace: "Aws/SQS"
+      MetricName: "ApproximateNumberOfMessagesVisible"
+      Period: "60"
+      Statistic: "Sum"
+      EvaluationPeriods: "1"
+      Threshold: "1"
+      AlarmActions:
+        - !Sub "arn:aws:sns:sa-east-1:${AWS::AccountId}:testando"
+      Dimensions:
+        - Name: "QueueName"
+          Value: "FilaTeste" 
+
