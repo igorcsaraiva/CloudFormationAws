@@ -10,7 +10,7 @@ Resources:
       AlarmDescription: "Alerta mensagem na fila"
       AlarmName: "AlertaMensagem"
       ComparisonOperator: "GreaterThanOrEqualToThreshold"
-      Namespace: "Aws/SQS"
+      Namespace: "AWS/SQS"
       MetricName: "ApproximateNumberOfMessagesVisible"
       Period: "60"
       Statistic: "Sum"
@@ -20,5 +20,8 @@ Resources:
         - !Sub "arn:aws:sns:sa-east-1:${AWS::AccountId}:testando"
       Dimensions:
         - Name: "QueueName"
-          Value: "FilaTeste" 
+          Value: 
+            Fn::GetAtt: 
+              - "FilaTeste"
+              - "QueueName" 
 

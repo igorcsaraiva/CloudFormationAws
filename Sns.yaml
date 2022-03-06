@@ -22,6 +22,8 @@ Resources:
             Resource: !Ref Teste
             Condition:
               ArnEquals:
-                AWS:SourceArn: !Sub 'arn:aws:cloudwatch:sa-east-1:${AWS::AccountId}:alarm:CriadoNaMao'
+                AWS:SourceArn: 
+                 - !Sub 'arn:aws:cloudwatch:sa-east-1:${AWS::AccountId}:alarm:CriadoNaMao'
+                 - !Sub 'arn:aws:cloudwatch:sa-east-1:${AWS::AccountId}:alarm:AlertaMensagem'
       Topics:
         - !Ref Teste
