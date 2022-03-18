@@ -7,21 +7,48 @@ Resources:
   AlarmTeste:
     Type: "AWS::CloudWatch::Alarm"
     Properties: 
-      AlarmDescription: "Alerta mensagem na fila"
-      AlarmName: "AlertaMensagem"
-      ComparisonOperator: "GreaterThanOrEqualToThreshold"
-      Namespace: "AWS/SQS"
-      MetricName: "ApproximateNumberOfMessagesVisible"
-      Period: "60"
-      Statistic: "Sum"
-      EvaluationPeriods: "1"
-      Threshold: "1"
       AlarmActions:
         - !Sub "arn:aws:sns:sa-east-1:${AWS::AccountId}:testando"
-      Dimensions:
-        - Name: "QueueName"
-          Value: 
-            Fn::GetAtt: 
-              - "FilaTeste"
-              - "QueueName" 
-
+      AlarmDescription: "Alerta mensagem na fila"
+      AlarmName: "AlertaMensagem"
+      Metrics:
+         - Expression: "m2-m1"
+           Id: "e1"
+           Label: "ChangeInAmountVisible"
+           ReturnData: true
+         - Id: "m1"
+           Label: "MessagesVisibleMin"
+           MetricStat:
+            Metric: 
+              Dimensions:
+                - Name: "QueueName"
+                  Value: 
+                    Fn::GetAtt: 
+                    - "FilaTeste"
+                    - "QueueName"
+              MetricName: "ApproximateNumberOfMessagesVisible"
+              Namespace: "AWS/SQS"
+            Period: "300"
+            Stat: "Minimum"
+            Unit: "Count"
+           ReturnData: false
+         - Id: "m2"
+           Label: "MessagesVisibleMax"
+           MetricStat:
+            Metric: 
+              Dimensions:
+                - Name: "QueueName"
+                  Value: 
+                    Fn::GetAtt: 
+                    - "FilaTeste"
+                    - "QueueName"
+              MetricName: "ApproximateNumberOfMessagesVisible"
+              Namespace: "AWS/SQS"
+            Period: "300"
+            Stat: "Maximum"
+            Unit: "Count"
+           ReturnData: false   
+      ComparisonOperator: "GreaterThanOrEqualToThreshold"
+      Threshold: 1
+      DatapointsToAlarm: 1
+      EvaluationPeriods: 1
